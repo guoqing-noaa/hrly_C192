@@ -48,7 +48,7 @@ export FIXgdas="${FIXgfs}/gdas"
 export PACKAGEROOT="/lfs4/HFIP/hfv3gfs/glopara/nwpara"    # TODO: set via prod_envir in Ops
 export COMROOT="/lfs4/BMC/nrtrr/gge/ufs-ar/comroot"    # TODO: set via prod_envir in Ops
 export COMINsyn="/lfs4/HFIP/hfv3gfs/glopara/com/gfs/prod/syndat"
-export DMPDIR="/lfs4/BMC/nrtrr/gge/ufs-ar/dump/6hourly"
+export DMPDIR="/lfs4/BMC/wrfruc/hlin/Data/Obs/Atmospheric_river/dump_glopara"
 export BASE_CPLIC="/mnt/lfs4/HFIP/hfv3gfs/glopara/data/ICSDIR/prototype_ICs"
 
 # Gempak from external models
@@ -105,7 +105,7 @@ export NCP="/bin/cp -p"
 export NMV="/bin/mv"
 export NLN="/bin/ln -sf"
 export VERBOSE="YES"
-export KEEPDATA="NO"
+export KEEPDATA="YES"
 export DEBUG_POSTSCRIPT="NO" # PBS only; sets debug=true
 export CHGRP_RSTPROD="YES"
 export CHGRP_CMD="chgrp rstprod"
@@ -120,7 +120,7 @@ export BASE_JOB="${HOMEgfs}/jobs/rocoto"
 export SDATE=2023021918
 export EDATE=2023022006
 export EXP_WARM_START=".false."
-export assim_freq=6
+export assim_freq=1
 export PSLOT="hrly_C192"
 export EXPDIR="/lfs4/BMC/nrtrr/gge/ufs-ar/expdir/${PSLOT}"
 export ROTDIR="/lfs4/BMC/nrtrr/gge/ufs-ar/comroot/${PSLOT}"
@@ -275,8 +275,8 @@ fi
 
 # Output frequency of the forecast model (for cycling)
 export FHMIN=0
-export FHMAX=9
-export FHOUT=3           # Will be changed to 1 in config.base if (DOHYBVAR set to NO and l4densvar set to false)
+export FHMAX=1
+export FHOUT=1           # Will be changed to 1 in config.base if (DOHYBVAR set to NO and l4densvar set to false)
 export FHOUT_OCNICE=3
 
 # Cycle to run EnKF  (set to BOTH for both gfs and gdas)
@@ -321,7 +321,7 @@ export WRITE_DOPOST=".true." # WRITE_DOPOST=true, use inline POST
 export WRITE_NSFLIP=".true."
 
 # IAU related parameters
-export DOIAU="YES"        # Enable 4DIAU for control with 3 increments
+export DOIAU="NO"        # Enable 4DIAU for control with 3 increments
 export IAUFHRS="3,6,9"
 export IAU_FHROT=${IAUFHRS%%,*}
 export IAU_DELTHRS=6
@@ -364,15 +364,15 @@ export DO_CALC_INCREMENT_ENKF_GFS="NO"
 
 # EnKF output frequency
 if [[ ${DOHYBVAR} = "YES" ]]; then
-    export FHMIN_ENKF=3
-    export FHMAX_ENKF=9
+    export FHMIN_ENKF=1
+    export FHMAX_ENKF=1
     export FHMAX_ENKF_GFS=12
     export FHOUT_ENKF_GFS=3
     if [[ ${l4densvar} = ".true." ]]; then
         export FHOUT=1
         export FHOUT_ENKF=1
     else
-        export FHOUT_ENKF=3
+        export FHOUT_ENKF=1
     fi
 fi
 
