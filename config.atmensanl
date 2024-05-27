@@ -1,0 +1,24 @@
+#! /usr/bin/env bash
+
+########## config.atmensanl ##########
+# configuration common to all atm ens analysis tasks
+
+echo "BEGIN: config.atmensanl"
+
+export JCB_BASE_YAML="${PARMgfs}/gdas/atm/jcb-base.yaml.j2"
+export JCB_ALGO_YAML="${PARMgfs}/gdas/atm/jcb-prototype_lgetkf.yaml.j2"
+
+export INTERP_METHOD='barycentric'
+
+export CRTM_FIX_YAML="${PARMgfs}/gdas/atm_crtm_coeff.yaml.j2"
+export JEDI_FIX_YAML="${PARMgfs}/gdas/atm_jedi_fix.yaml.j2"
+
+export layout_x_atmensanl=8
+export layout_y_atmensanl=8
+
+export io_layout_x=1
+export io_layout_y=1
+
+export JEDIEXE=${EXECgfs}/gdas.x
+
+echo "END: config.atmensanl"
