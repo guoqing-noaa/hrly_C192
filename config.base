@@ -322,13 +322,36 @@ export WRITE_NSFLIP=".true."
 
 # IAU related parameters
 export DOIAU="NO"        # Enable 4DIAU for control with 3 increments
-export IAUFHRS="3,6,9"
-export IAU_FHROT=${IAUFHRS%%,*}
-export IAU_DELTHRS=6
-export IAU_OFFSET=6
 export DOIAU_ENKF=${DOIAU:-"YES"}   # Enable 4DIAU for EnKF ensemble
-export IAUFHRS_ENKF="3,6,9"
-export IAU_DELTHRS_ENKF=6
+case "${assim_freq}" in
+  "6")
+    export IAUFHRS="3,6,9"
+    export IAUFHRS_ENKF="3,6,9"
+    export IAU_DELTHRS_ENKF=6
+    ;;
+  "3")
+    export IAUFHRS="2,3,4"
+    export IAUFHRS_ENKF="2,3,4"
+    export IAU_DELTHRS_ENKF=3
+    ;;
+  "2")
+    export IAUFHRS="1,2,3"
+    export IAUFHRS_ENKF="1,2,3"
+    export IAU_DELTHRS_ENKF=3
+    ;;
+  "1")
+    export IAUFHRS="1"
+    export IAUFHRS_ENKF="1"
+    export IAU_DELTHRS_ENKF=1
+    ;;
+  *)
+    echo "Unsupported assim_freq: '${assim_freq}'"
+    exit 1
+    ;;
+esac
+export IAU_FHROT=${IAUFHRS%%,*}
+export IAU_DELTHRS="${assim_freq}"
+export IAU_OFFSET="${assim_freq}"
 
 # Use Jacobians in eupd and thereby remove need to run eomg
 export lobsdiag_forenkf=".true."
@@ -353,7 +376,7 @@ export DO_MERGENSST="NO"
 export DOHYBVAR="YES"
 export NMEM_ENS=20
 export SMOOTH_ENKF="NO"
-export l4densvar=".true."
+export l4densvar=".false."
 export lwrite4danl=".true."
 export DO_CALC_INCREMENT="NO"
 
@@ -378,10 +401,10 @@ fi
 
 # if 3DVAR and IAU
 if [[ ${DOHYBVAR} == "NO" && ${DOIAU} == "YES"  ]]; then
-    export IAUFHRS="6"
-    export IAU_FHROT="3"
+    export IAUFHRS="${assim_freq}"
+    export IAU_FHROT=$(( (assim_freq+1)/2 ))
     export IAU_FILTER_INCREMENTS=".true."
-    export IAUFHRS_ENKF="6"
+    export IAUFHRS_ENKF="${assim_freq}"
 fi
 
 # Generate post-processing ensemble spread files
@@ -391,25 +414,25 @@ export ENKF_SPREAD="YES"
 if [[ "${MODE}" = "cycled" && "${SDATE}" = "${PDY}${cyc}" && ${EXP_WARM_START} = ".false." ]] || [[ "${DOIAU}" = "NO" ]] || [[ "${MODE}" = "forecast-only" && ${EXP_WARM_START} = ".false." ]] ; then
   export IAU_OFFSET=0
   export IAU_FHROT=0
-  export IAUFHRS="6"
+  export IAUFHRS="${assim_freq}"
 fi
 
-if [[ "${DOIAU_ENKF}" = "NO" ]]; then export IAUFHRS_ENKF="6"; fi
+if [[ "${DOIAU_ENKF}" = "NO" ]]; then export IAUFHRS_ENKF="${assim_freq}"; fi
 
 # Determine restart intervals
 # For IAU, write restarts at beginning of window also
 if [[ "${DOIAU_ENKF:-}" == "YES" ]]; then
-  export restart_interval_enkfgdas="3"
+  export restart_interval_enkfgdas="1"
 else
-  export restart_interval_enkfgdas="6"
+  export restart_interval_enkfgdas="1"
 fi
 
 export restart_interval_enkfgfs=${restart_interval_enkfgdas}
 
 if [[ "${DOIAU}" == "YES" ]]; then
-  export restart_interval_gdas="3"
+  export restart_interval_gdas="1"
 else
-  export restart_interval_gdas="6"
+  export restart_interval_gdas="1"
 fi
 
 export GSI_SOILANAL=NO

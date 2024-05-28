@@ -1,1 +1,6 @@
 *.db
+hrly_C192.crontab
+hrly_C192.xml
+logs/
+save.config.base
+
