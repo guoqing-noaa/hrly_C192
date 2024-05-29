@@ -48,7 +48,7 @@ export FIXgdas="${FIXgfs}/gdas"
 export PACKAGEROOT="/lfs4/HFIP/hfv3gfs/glopara/nwpara"    # TODO: set via prod_envir in Ops
 export COMROOT="/lfs4/BMC/nrtrr/gge/ufs-ar/comroot"    # TODO: set via prod_envir in Ops
 export COMINsyn="/lfs4/HFIP/hfv3gfs/glopara/com/gfs/prod/syndat"
-export DMPDIR="/lfs4/BMC/wrfruc/hlin/Data/Obs/Atmospheric_river/dump_glopara"
+export DMPDIR="/lfs4/BMC/nrtrr/gge/ufs-ar/dump/hourly"
 export BASE_CPLIC="/mnt/lfs4/HFIP/hfv3gfs/glopara/data/ICSDIR/prototype_ICs"
 
 # Gempak from external models
